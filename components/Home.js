@@ -1,41 +1,52 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, FlatList, Image } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, StatusBar, TextInput, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts } from "expo-font";
 
 import SVGMenu from '../assets/images/menu.svg';
 import SVGSearch from '../assets/images/search.svg';
+import SVGRightArrow from '../assets/images/right-arrow.svg';
 
 import colors from '../assets/colors/colors';
 import categoriesData from '../assets/data/categoriesData';
+import importedData from '../assets/data/importedData';
 
-export default function Home() {
+export default function HomeScreen({ navigation }) {
     const [loaded] = useFonts({
         'Montserrat-Regular': require('../assets/fonts/Montserrat-Regular.ttf'),
         'Montserrat-Bold': require('../assets/fonts/Montserrat-Bold.ttf'),
         'Montserrat-Light': require('../assets/fonts/Montserrat-Light.ttf'),
     });
 
-    if (!loaded) {
+    {/* Cards --- from Categories */}
+    const categoryItem = ({ item }) => {
         return (
-            <View></View>
-        );
+            <TouchableOpacity style={[styles.categoriesItemWrapper, {backgroundColor: item.backColor}]} onPress={() => navigation.navigate('Cards', { deckItem: item})}>
+                <Image source={item.image} style={styles.categoryImage}/>
+                <Text style={[styles.categoriesItemTitle, {color: item.frontColor}]}>{item.title}</Text>
+                <View style={styles.categoriesItemDot}>
+                    <SVGRightArrow width={18} height={18} style={{color: colors.textblack}}/>
+                </View>
+            </TouchableOpacity>
+        )
     }
 
-    const renderItem = ({ item }) => {
+    {/* Cards --- from Imported & Custom Decks */}
+    const importedItem = ({ item }) => {
         return (
-            <View style={styles.categoriesItemWrapper}>
-                <Image source={item.image} height={30} resizeMode='stretch'/>
-                <Text style={styles.categoriesItemTitle}>{item.title}</Text>
-                <View style={styles.categoriesItemDot}>
-                    <SVGMenu width={24} height={424} style={{color: colors.textblack}}/>
+            <TouchableOpacity style={styles.importedItemWrapper}>
+                <View>
+                    <Text style={styles.importedItemTitle}>{item.title}</Text>
+                    <Text style={styles.importedItemSubtitle}>{item.subtitle}</Text>
                 </View>
-            </View>
+                <SVGRightArrow width={15} height={15} style={{color: colors.textblack}}/>
+            </TouchableOpacity>
         )
     }
 
     return (
         <View style={styles.container}>
+            <StatusBar backgroundColor={colors.background} barStyle='dark-content' />
             <SafeAreaView>
                 {/* Header */}
                 <View style={styles.header}>
@@ -43,28 +54,38 @@ export default function Home() {
                         <Text style={styles.subtitle}>Select your</Text>
                         <Text style={styles.title}>Questions</Text>
                     </View>
-                    <SVGMenu width={24} height={24} style={{color: colors.textblack}}/>
+                    <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
+                        <SVGMenu width={24} height={24} style={{color: colors.textblack}}/>
+                    </TouchableOpacity>
                 </View>
 
                 {/* Search */}
                 <View style={styles.searchWrapper}>
                     <SVGSearch width={24} height={24} style={{color: colors.textblack, marginTop: 10}} />
                     <View style={styles.search}>
-                        <Text style={styles.searchText}>Search</Text>
+                        <TextInput placeholder='Search' style={styles.searchText}></TextInput>
                     </View>
                 </View>
 
                 {/* Categories */}
-                <View style={styles.categoriesWrapper}>
-                    <Text style={styles.categoriesTitle}>Categories</Text>
-                    <View style={styles.categoriesListWrapper}>
-                        <FlatList
-                            data={categoriesData}
-                            renderItem={renderItem}
-                            keyExtractor={item => item.id}
-                            horizontal={true}
-                        />
-                    </View>
+                <Text style={styles.sectionTitle}>Categories</Text>
+                <FlatList
+                    data={categoriesData}
+                    renderItem={categoryItem}
+                    keyExtractor={item => item.id}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                />
+
+                {/* Imported & Custom Decks */}
+                <Text style={styles.sectionTitle}>Imported</Text>
+                <View style={styles.importedListWrapper}>
+                    <FlatList
+                        data={importedData}
+                        renderItem={importedItem}
+                        keyExtractor={item => item.id}
+                        showsVerticalScrollIndicator={false}
+                    />
                 </View>
             </SafeAreaView>
         </View>
@@ -85,17 +106,18 @@ const styles = StyleSheet.create({
     },
     subtitle: {
         color: colors.textblack,
-        fontSize: 20,
+        fontSize: 30,
         fontFamily: 'Montserrat-Regular',
     },
     title: {
         color: colors.textblack,
-        fontSize: 36,
+        fontSize: 50,
         fontFamily: 'Montserrat-Bold',
+        marginTop: -10,
     },
     searchWrapper: {
         paddingHorizontal: 23,
-        marginTop: 30,
+        marginVertical: 30,
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -111,20 +133,82 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Regular',
         marginBottom: 5,
     },
-    categoriesWrapper: {
-        paddingHorizontal: 20,
-        marginTop: 30,
-    },
-    categoriesTitle: {
+
+    sectionTitle: {
         color: colors.textblack,
         fontSize: 16,
         fontFamily: 'Montserrat-Bold',
+        marginLeft: 20,
     },
-    categoriesListWrapper: {
-        paddingTop: 15,
-    },
+
     categoriesItemWrapper: {
-        width: 140,
-        height: 200,
+        width: 130,
+        height: 180,
+        marginLeft: 20,
+        marginTop: 30,
+        marginBottom: 50,
+        borderRadius: 15,
+
+        elevation: 15,
+        shadowColor: '#050505',
+    },
+    categoriesItemTitle: {
+        color: 'white',
+        fontSize: 20,
+        fontFamily: 'Montserrat-Bold',
+        marginTop: 15,
+        marginLeft: 15,
+
+        elevation: 20,
+        shadowColor: 'black',
+    },
+    categoriesItemDot: {
+        position: 'absolute',
+        bottom: 10,
+        right: 10,
+
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        width: 30,
+        height: 30,
+        borderRadius: 20,
+        elevation: 5,
+        shadowColor: '#52006A',
+    },
+    categoryImage: {
+        width: 130,
+        height: 80,
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        opacity: 0.8,
+    },
+
+    importedListWrapper: {
+        paddingTop: 30,
+    },
+    importedItemWrapper: {
+        backgroundColor: 'white',
+        height: 80,
+        marginBottom: 15,
+        borderRadius: 15,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        marginHorizontal: 20,
+
+        borderColor: colors.textgrey,
+        borderWidth: 1,
+        elevation: 10,
+        shadowColor: '#52006A',
+    },
+    importedItemTitle: {
+        fontFamily: 'Montserrat-Regular',
+    },
+    importedItemSubtitle: {
+        fontFamily: 'Montserrat-Light',
+        color: colors.textgrey,
     },
 })
