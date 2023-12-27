@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, StatusBar, TextInput, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFonts } from "expo-font";
-import { useState } from 'react';
 
 import SVGMenu from '../assets/images/menu.svg';
 import SVGSearch from '../assets/images/search.svg';
 import SVGRightArrow from '../assets/images/right-arrow.svg';
+import SVGCross from '../assets/images/cross.svg';
 
 import colors from '../assets/colors/colors';
 import categoriesData from '../assets/data/categoriesData';
@@ -14,11 +13,9 @@ import importedData from '../assets/data/importedData';
 
 export default function HomeScreen({ navigation }) {
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const handleSearch = (query) => {
-        setSearchQuery(query);
-        console.log(query);
-    }
+    {/* Search */}
+    const [search, setSearch] = React.useState('');
+    handleSearch = (text) => { setSearch(text.toLowerCase()); }
 
     {/* Cards --- from Categories */}
     const categoryItem = ({ item }) => {
@@ -66,14 +63,14 @@ export default function HomeScreen({ navigation }) {
                 <View style={styles.searchWrapper}>
                     <SVGSearch width={24} height={24} style={{color: colors.textblack, marginTop: 10}} />
                     <View style={styles.search}>
-                        <TextInput clearButtonMode='always' onChangeText={(query) => handleSearch(query)} placeholder='Search' style={styles.searchText}></TextInput>
+                        <TextInput onChangeText={(text) => handleSearch(text)} clearButtonMode='always' placeholder='Search' style={styles.searchText}></TextInput>
                     </View>
                 </View>
 
                 {/* Categories */}
                 <Text style={styles.sectionTitle}>Categories</Text>
                 <FlatList
-                    data={categoriesData}
+                    data={categoriesData.filter(item => item.title.toLowerCase().includes(search))}
                     renderItem={categoryItem}
                     keyExtractor={item => item.id}
                     horizontal={true}
@@ -81,18 +78,20 @@ export default function HomeScreen({ navigation }) {
                     ItemSeparatorComponent={() => <View style={{width: 20}}/>}
                     ListFooterComponent={() => <View style={{width: 20}}/>}
                     ListHeaderComponent={() => <View style={{width: 20}}/>}
+                    ListEmptyComponent={() => <View style={[styles.emptyComponent, {width: 345, marginTop: 30, marginBottom: 50}]}><SVGCross width={20} height={20} color={colors.textgrey} marginBottom={10}/><Text style={styles.emptyComponentText}>No category decks for your search request</Text></View>}
                 />
 
-                {/* Imported & Custom Decks */}
+                {/* Imported & Custom Decks*/}
                 <Text style={styles.sectionTitle}>Imported</Text>
                 <View style={styles.importedListWrapper}>
                     <FlatList
-                        data={importedData}
+                        data={importedData.filter(item => item.title.toLowerCase().includes(search))}
                         renderItem={importedItem}
                         keyExtractor={item => item.id}
                         showsVerticalScrollIndicator={false}
                         ListFooterComponent={() => <View style={{height: 20}}/>}
                         ListHeaderComponent={() => <View style={{height: 20}}/>}
+                        ListEmptyComponent={() => <View style={[styles.emptyComponent, {marginHorizontal: 20}]}><SVGCross width={20} height={20} color={colors.textgrey} marginBottom={10}/><Text style={styles.emptyComponentText}>No imported decks</Text></View>}
                     />
                 </View>
             </SafeAreaView>
@@ -157,8 +156,8 @@ const styles = StyleSheet.create({
         marginBottom: 50,
         borderRadius: 15,
 
-        elevation: 15,
-        shadowColor: '#050505',
+        elevation: 8,
+        shadowColor: 'black',
     },
     categoriesItemTitle: {
         color: 'white',
@@ -220,6 +219,25 @@ const styles = StyleSheet.create({
     },
     importedItemSubtitle: {
         fontFamily: 'Montserrat-Light',
+        color: colors.textgrey,
+    },
+
+    emptyComponent: {
+        height: 180,
+
+        borderRadius: 15,
+        borderColor: '#e3e3e3',
+        borderWidth: 2,
+        borderStyle: 'dashed',
+
+        alignContent: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 50,
+    },
+    emptyComponentText: {
+        fontFamily: 'Montserrat-Regular',
+        textAlign: 'center',
         color: colors.textgrey,
     },
 })
