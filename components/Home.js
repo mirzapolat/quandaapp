@@ -97,6 +97,7 @@ export default function HomeScreen({ navigation }) {
                         keyExtractor={item => item.id}
                         showsVerticalScrollIndicator={false}
                         ListFooterComponent={() => <View style={{height: 20}}/>}
+                        ListHeaderComponent={() => <View style={{height: 20}}/>}
                     />
                 </View>
             </SafeAreaView>
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
     },
 
     importedListWrapper: {
-        paddingTop: 30,
+        marginTop: 10,
         marginBottom: 50,
     },
     importedItemWrapper: {
@@ -212,10 +213,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginHorizontal: 20,
 
-        borderColor: colors.textgrey,
-        borderWidth: 1,
         elevation: 10,
-        shadowColor: '#52006A',
+        shadowColor: '#050505',
+        shadowOffset: { width: 0, height: -20 },
+
+        borderColor: '#c5c5c5',
+        borderWidth: 1,
     },
     importedItemTitle: {
         fontFamily: 'Montserrat-Regular',

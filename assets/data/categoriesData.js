@@ -18,7 +18,7 @@ const categoriesData = [
     title: 'Gestern',
     backColor: '#EF8354',
     frontColor: '#fff',
-    image: require('../images/cardImages/jakub-skafiriak-AljDaiCbCVY-unsplash.jpg'),
+    image: require('../images/cardImages/jeremy-vessey-W7VYL56u2sc-unsplash.jpg'),
   },
   {
     id: '4',
