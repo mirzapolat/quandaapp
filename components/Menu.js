@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, FlatList, Image, StatusBar, TouchableOpacity, Switch } from 'react-native';
+import { StyleSheet, View, Text, StatusBar, TouchableOpacity, Switch, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFonts } from "expo-font";
 import { useState } from 'react';
 
 import colors from '../assets/colors/colors';
 
 import SVGRightArrow from '../assets/images/right-arrow.svg';
+import SVGBuyMeACoffee from '../assets/images/buymeacoffee.svg';
 
 export default function MenuScreen({ navigation }) {
 
@@ -16,8 +16,8 @@ export default function MenuScreen({ navigation }) {
 
         return (
             <Switch
-                trackColor={{ false: colors.textgrey, true: '#81b0ff'}}
-                thumbColor={isEnabled ? '#31805f' : colors.textblack}
+                trackColor={{ false: '#717171', true: '#717171'}}
+                thumbColor={isEnabled ? '#ffb300' : colors.textblack}
                 ios_backgroundColor={colors.textgrey}
                 onValueChange={toggleSwitch}
                 value={isEnabled}
@@ -56,6 +56,15 @@ export default function MenuScreen({ navigation }) {
                         <MenuSliderItem/>
                     </View>
                 </View>
+
+                {/* Footer */}
+                <TouchableOpacity activeOpacity={0.5} style={styles.footer} onPress={() => Linking.openURL('https://www.buymeacoffee.com/mirzapolat')}>
+                    <SVGBuyMeACoffee width={40} height={40}/>
+                    <View style={{marginLeft: 10}}>
+                        <Text style={{fontFamily: 'Montserrat-Bold', fontSize: 18, color: colors.textblack, marginBottom: 5}}>Like this app?</Text>
+                        <Text style={{fontFamily: 'Montserrat-Light', fontSize: 14, color: colors.textblack}}>Support the developer with a small donation on buymeacoffee.com</Text>
+                    </View>
+                </TouchableOpacity>
             </SafeAreaView>
         </View>
     );
@@ -92,5 +101,21 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         borderBottomColor: colors.textgrey,
         borderBottomWidth: 1,
+    },
+    footer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 20,
+        marginTop: 50,
+        padding: 20,
+
+        backgroundColor: '#ffdd00',
+        borderRadius: 15,
+        borderColor: colors.textgrey,
+        borderWidth: 1,
+
+        elevation: 10,
+        shadowColor: '#aaaaaa',
     },
 });
