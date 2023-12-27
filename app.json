@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Quanda",
-    "slug": "Question and Answer",
+    "slug": "Questions to Answer",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/meta/icon.png",
@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/meta/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#14081a"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -19,12 +19,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/meta/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/meta/icon.png",
+        "backgroundColor": "#14081a"
       }
     },
     "web": {
-      "favicon": "./assets/meta/favicon.png"
+      "favicon": "./assets/meta/icon.png"
     }
   }
 }

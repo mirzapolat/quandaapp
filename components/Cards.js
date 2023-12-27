@@ -12,11 +12,6 @@ import colors from '../assets/colors/colors';
 let currentCard = "Das ist die erste Frage";
 
 export default function CardsScreen({ route, navigation }) {
-    const [loaded] = useFonts({
-        'Montserrat-Regular': require('../assets/fonts/Montserrat-Regular.ttf'),
-        'Montserrat-Bold': require('../assets/fonts/Montserrat-Bold.ttf'),
-        'Montserrat-Light': require('../assets/fonts/Montserrat-Light.ttf'),
-    });
 
     NextCard();
     const { deckItem } = route.params;

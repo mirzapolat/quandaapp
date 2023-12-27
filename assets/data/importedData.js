@@ -1,21 +1,21 @@
 const importedData = [
   {
-    key: '1',
+    id: '1',
     title: 'My custom deck one',
     subtitle: 'Here is the subtitle',
   },
   {
-    key: '2',
+    id: '2',
     title: 'Another custom deck',
     subtitle: 'Here is the second subtitle',
   },
   {
-    key: '3',
+    id: '3',
     title: 'Another custom deck',
     subtitle: 'Here is the second subtitle',
   },
   {
-    key: '4',
+    id: '4',
     title: 'Another custom deck',
     subtitle: 'Here is the second subtitle',
   },

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, FlatList, Image, StatusBar, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Image, StatusBar, TouchableOpacity, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts } from "expo-font";
 import { useState } from 'react';
@@ -9,65 +9,19 @@ import colors from '../assets/colors/colors';
 import SVGRightArrow from '../assets/images/right-arrow.svg';
 
 export default function MenuScreen({ navigation }) {
-    const [loaded] = useFonts({
-        'Montserrat-Regular': require('../assets/fonts/Montserrat-Regular.ttf'),
-        'Montserrat-Bold': require('../assets/fonts/Montserrat-Bold.ttf'),
-        'Montserrat-Light': require('../assets/fonts/Montserrat-Light.ttf'),
-    });
-
-    let [sliderValue, setSliderValue] = useState(1);
 
     const MenuSliderItem = () => {
+        const [isEnabled, setIsEnabled] = useState(false);
+        const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-        if(sliderValue == 0)
         return (
-            <TouchableOpacity style={{
-                height: 25,
-                width: 50,
-                borderRadius: 50,
-                backgroundColor: colors.textgrey,
-                elevation: 5,
-                shadowColor: 'black',
-                justifyContent: 'center',
-                padding: 2,
-
-            }}>
-                <View style={{
-                    width: '50%',
-                    height: '100%',
-                    backgroundColor: '#c5c5c5',
-                    borderRadius: 50,
-
-                    elevation: 5,
-                    shadowColor: 'black',
-                }}/>
-            </TouchableOpacity>
-        );
-
-        else
-        return (
-            <TouchableOpacity style={{
-                height: 25,
-                width: 50,
-                borderRadius: 50,
-                backgroundColor: '#c5c5c5',
-                elevation: 5,
-                shadowColor: 'black',
-                justifyContent: 'center',
-                padding: 2,
-                paddingLeft: 25,
-
-            }}>
-                <View style={{
-                    width: 23,
-                    height: '100%',
-                    backgroundColor: '#168FB5',
-                    borderRadius: 50,
-
-                    elevation: 5,
-                    shadowColor: 'black',
-                }}/>
-            </TouchableOpacity>
+            <Switch
+                trackColor={{ false: colors.textgrey, true: '#81b0ff'}}
+                thumbColor={isEnabled ? '#31805f' : colors.textblack}
+                ios_backgroundColor={colors.textgrey}
+                onValueChange={toggleSwitch}
+                value={isEnabled}
+            />
         );
     }
 

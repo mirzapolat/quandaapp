@@ -13,11 +13,6 @@ import categoriesData from '../assets/data/categoriesData';
 import importedData from '../assets/data/importedData';
 
 export default function HomeScreen({ navigation }) {
-    const [loaded] = useFonts({
-        'Montserrat-Regular': require('../assets/fonts/Montserrat-Regular.ttf'),
-        'Montserrat-Bold': require('../assets/fonts/Montserrat-Bold.ttf'),
-        'Montserrat-Light': require('../assets/fonts/Montserrat-Light.ttf'),
-    });
 
     const [searchQuery, setSearchQuery] = useState('');
     const handleSearch = (query) => {
