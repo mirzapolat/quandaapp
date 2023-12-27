@@ -6,10 +6,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from "expo-font";
 import { View } from 'react-native';
 
-import * as SQLite from 'expo-sqlite';
-import { useState, useEffect } from 'react';
-import './global.js'
-
 import HomeScreen from './components/Home';
 import MenuScreen from './components/Menu';
 import CardsScreen from './components/Cards';
@@ -17,8 +13,6 @@ import CardsScreen from './components/Cards';
 const Stack = createNativeStackNavigator();
 
 function App() {
-  global.db = SQLite.openDatabase('quanda.db');
-
 
   // Loading all Fonts
   const [loaded] = useFonts({
