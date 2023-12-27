@@ -8,6 +8,8 @@ import SVGMenu from '../assets/images/menu.svg';
 import SVGLeftArrow from '../assets/images/left-arrow.svg';
 import colors from '../assets/colors/colors';
 
+/*export var alwaysNewCards = false;*/
+
 import { heuteCards, gesternCards, morgenCards, sparkCards } from '../assets/data/cards.js';
 var previousCardLog;
 
@@ -80,11 +82,13 @@ export default function CardsScreen({ route, navigation }) {
                 </View>
 
                 {/* Cards */}
+
                 <TouchableOpacity activeOpacity={0.5} style={styles.cardsWrapper} onPress={() => nextRandomCard()}>
                     <Text style={styles.cardText}>{theDeck[randomNumber]}</Text>
+                    {previousCardLog.length > 1 &&
                     <TouchableOpacity activeOpacity={0.5} style={styles.backButton} onPress={() => previousCard()}>
                         <Text style={styles.backButtonText}>Letzte Karte</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity>}
                 </TouchableOpacity>
 
             </SafeAreaView>

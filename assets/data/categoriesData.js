@@ -20,11 +20,11 @@ export default categoriesData = [
     frontColor: '#fff',
     image: require('../images/cardImages/jeremy-vessey-W7VYL56u2sc-unsplash.jpg'),
   },
-  {
+  /*{
     id: '4',
     title: 'Spark Cards',
     backColor: '#06D6A0',
     frontColor: '#000000',
     image: require('../images/cardImages/jakub-skafiriak-AljDaiCbCVY-unsplash.jpg'),
-  },
+  },*/
 ];

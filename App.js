@@ -6,13 +6,40 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts } from "expo-font";
 import { View } from 'react-native';
 
+/*import AsyncStorage from '@react-native-async-storage/async-storage'; */
+
 import HomeScreen from './components/Home';
 import MenuScreen from './components/Menu';
 import CardsScreen from './components/Cards';
 
 const Stack = createNativeStackNavigator();
 
+/*async function InitAsyncStorage() {
+  const gotSettings = await AsyncStorage.getItem('settings');
+  if (gotSettings == null) {
+    data = JSON.parse({
+      "alwaysNewCards":"false",
+      "showCategoryDecks":"true",
+      "showImportedDecks":"true",
+      "showSearchBar":"true"
+    });
+
+    AsyncStorage.setItem('settings', data);
+  }
+  else {
+    const jsonValue = JSON.parse(gotSettings);
+
+    alwaysNewCards = jsonValue.alwaysNewCards == "true" ? true : false;
+    showCategoryDecks = jsonValue.showCategoryDecks == "true" ? true : false;
+    showImportedDecks = jsonValue.showImportedDecks == "true" ? true : false;
+    showSearchBar = jsonValue.showSearchBar == "true" ? true : false;
+  }
+}*/
+
 function App() {
+
+  // Init Async Storage
+  //InitAsyncStorage();
 
   // Loading all Fonts
   const [loaded] = useFonts({

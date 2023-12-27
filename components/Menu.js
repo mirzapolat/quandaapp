@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, StatusBar, TouchableOpacity, Switch, Linking } from 'react-native';
+import { StyleSheet, View, Text, StatusBar, TouchableOpacity, Switch, Linking, findNodeHandle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 
@@ -8,18 +8,32 @@ import colors from '../assets/colors/colors';
 import SVGRightArrow from '../assets/images/right-arrow.svg';
 import SVGBuyMeACoffee from '../assets/images/buymeacoffee.svg';
 
+/*import AsyncStorage from '@react-native-async-storage/async-storage';
+
+async function getStoredSetting(mon) {
+    const value = await AsyncStorage.getItem('settings');
+    const jsonVal = JSON.parse(value);
+
+    if (mon == 'alwaysNewCards') return jsonVal.alwaysNewCards == "true" ? true : false;
+    else if (mon == 'showCategoryDecks') return jsonVal.showCategoryDecks == "true" ? true : false;
+    else if (mon == 'showImportedDecks') return jsonVal.showImportedDecks == "true" ? true : false;
+    else if (mon == 'showSearchBar') return jsonVal.showSearchBar == "true" ? true : false;
+    else return false;
+}*/
+
 export default function MenuScreen({ navigation }) {
 
     const MenuSliderItem = () => {
         const [isEnabled, setIsEnabled] = useState(false);
-        const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+        const toggleSwitch = () => setIsEnabled(previousState => {
+            const newState = !previousState;
+            return newState;
+        });
 
         return (
             <Switch
                 trackColor={{ false: '#717171', true: '#717171'}}
                 thumbColor={isEnabled ? '#ffb300' : colors.textblack}
-                ios_backgroundColor={colors.textgrey}
-                onValueChange={toggleSwitch}
                 value={isEnabled}
             />
         );

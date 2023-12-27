@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, StatusBar, TextInput, Image, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, StatusBar, TextInput, Image } from 'react-native';
+import { ScrollView } from 'react-native-virtualized-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import SVGMenu from '../assets/images/menu.svg';
@@ -10,6 +11,10 @@ import SVGCross from '../assets/images/cross.svg';
 import colors from '../assets/colors/colors';
 import categoriesData from '../assets/data/categoriesData';
 import importedData from '../assets/data/importedData';
+
+/*export var showCategoryDecks = true;
+export var showImportedDecks = true;
+export var showSearchBar = true;*/
 
 export default function HomeScreen({ navigation }) {
 
