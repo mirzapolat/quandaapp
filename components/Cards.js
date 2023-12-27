@@ -1,19 +1,58 @@
 import * as React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFonts } from "expo-font";
+import { useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import SVGMenu from '../assets/images/menu.svg';
 import SVGLeftArrow from '../assets/images/left-arrow.svg';
-
 import colors from '../assets/colors/colors';
 
-let currentCard = "Das ist die erste Frage";
+import { heuteCards, gesternCards, morgenCards, sparkCards } from '../assets/data/cards.js';
+var previousCardLog;
 
 export default function CardsScreen({ route, navigation }) {
 
-    NextCard();
+    var theDeck;
+    if (route.params.deckItem.title === 'Heute') {
+        theDeck = heuteCards;
+    } else if (route.params.deckItem.title === 'Gestern') {
+        theDeck = gesternCards;
+    } else if (route.params.deckItem.title === 'Morgen') {
+        theDeck = morgenCards;
+    } else if (route.params.deckItem.title === 'Spark Cards') {
+        theDeck = sparkCards;
+    } else {
+        theDeck = ['Error loading Deck'];
+    }
+
+    const [randomNumber, setRandomNumber] = useState(() => {
+        previousCardLog = [];
+        r = Math.floor(Math.random() * theDeck.length);
+        previousCardLog.push(r);
+        console.log(previousCardLog);
+        return r;
+    });
+
+    nextRandomCard = () => {
+        if (theDeck.length >= 2) {
+            do {
+                rand = Math.floor(Math.random() * theDeck.length);
+            } while (rand == randomNumber);
+
+            setRandomNumber(rand);
+            previousCardLog.push(rand);
+            console.log(previousCardLog);
+        }
+    }
+
+    previousCard = () => {
+        if (previousCardLog.length >= 1) {
+            setRandomNumber(previousCardLog.pop());
+            console.log(previousCardLog);
+        }
+    }
+
     const { deckItem } = route.params;
     return (
         <View style={styles.container}>
@@ -41,9 +80,9 @@ export default function CardsScreen({ route, navigation }) {
                 </View>
 
                 {/* Cards */}
-                <TouchableOpacity activeOpacity={0.5} style={styles.cardsWrapper} onPress={NextCard}>
-                    <Text style={styles.cardText}>{currentCard}</Text>
-                    <TouchableOpacity activeOpacity={0.5} style={styles.backButton} onPress={PreviousCard}>
+                <TouchableOpacity activeOpacity={0.5} style={styles.cardsWrapper} onPress={() => nextRandomCard()}>
+                    <Text style={styles.cardText}>{theDeck[randomNumber]}</Text>
+                    <TouchableOpacity activeOpacity={0.5} style={styles.backButton} onPress={() => previousCard()}>
                         <Text style={styles.backButtonText}>Letzte Karte</Text>
                     </TouchableOpacity>
                 </TouchableOpacity>
@@ -51,16 +90,6 @@ export default function CardsScreen({ route, navigation }) {
             </SafeAreaView>
         </View>
     );
-}
-
-function NextCard() {
-    {/* Hier die nächste Karte aussuchen und in currentCard schreiben, sodass die Frage geändert wird. */}
-    console.log("Next Card");
-}
-
-function PreviousCard() {
-    {/* Hier die nächste Karte aussuchen und in currentCard schreiben, sodass die Frage geändert wird. */}
-    console.log("Previous Card");
 }
 
 const styles = StyleSheet.create({
@@ -103,7 +132,7 @@ const styles = StyleSheet.create({
     },
     cardsWrapper: {
         marginTop: 30,
-        paddingHorizontal: 20,
+        paddingHorizontal: 50,
         backgroundColor: colors.background,
         marginHorizontal: 20,
         height: Dimensions.get('window').height * 0.7,
