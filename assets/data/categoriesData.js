@@ -1,4 +1,4 @@
-const categoriesData = [
+export default categoriesData = [
   {
     id: '1',
     title: 'Heute',
@@ -28,5 +28,3 @@ const categoriesData = [
     image: require('../images/cardImages/jakub-skafiriak-AljDaiCbCVY-unsplash.jpg'),
   },
 ];
-
-export default categoriesData;
