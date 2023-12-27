@@ -41,7 +41,7 @@ export default function CardsScreen({ route, navigation }) {
                         <Text style={[styles.title, {color: deckItem.frontColor}]}>{deckItem.title}</Text>
                     </View>
                     <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
-                        <SVGMenu width={24} height={24} style={{color: deckItem.frontColor}}/>
+                        <SVGMenu width={24} height={24} style={{color: deckItem.frontColor, marginTop: 10}}/>
                     </TouchableOpacity>
                 </View>
 

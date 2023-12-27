@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, StatusBar, TextInput, Image } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, StatusBar, TextInput, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts } from "expo-font";
+import { useState } from 'react';
 
 import SVGMenu from '../assets/images/menu.svg';
 import SVGSearch from '../assets/images/search.svg';
@@ -17,6 +18,12 @@ export default function HomeScreen({ navigation }) {
         'Montserrat-Bold': require('../assets/fonts/Montserrat-Bold.ttf'),
         'Montserrat-Light': require('../assets/fonts/Montserrat-Light.ttf'),
     });
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const handleSearch = (query) => {
+        setSearchQuery(query);
+        console.log(query);
+    }
 
     {/* Cards --- from Categories */}
     const categoryItem = ({ item }) => {
@@ -47,15 +54,16 @@ export default function HomeScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={colors.background} barStyle='dark-content' />
+            <ScrollView>
             <SafeAreaView>
                 {/* Header */}
                 <View style={styles.header}>
                     <View>
                         <Text style={styles.subtitle}>Select your</Text>
-                        <Text style={styles.title}>Questions</Text>
+                        <Text style={styles.title}>Quanda</Text>
                     </View>
                     <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
-                        <SVGMenu width={24} height={24} style={{color: colors.textblack}}/>
+                        <SVGMenu width={24} height={24} style={{color: colors.textblack, marginTop: 10}}/>
                     </TouchableOpacity>
                 </View>
 
@@ -63,7 +71,7 @@ export default function HomeScreen({ navigation }) {
                 <View style={styles.searchWrapper}>
                     <SVGSearch width={24} height={24} style={{color: colors.textblack, marginTop: 10}} />
                     <View style={styles.search}>
-                        <TextInput placeholder='Search' style={styles.searchText}></TextInput>
+                        <TextInput clearButtonMode='always' onChangeText={(query) => handleSearch(query)} placeholder='Search' style={styles.searchText}></TextInput>
                     </View>
                 </View>
 
@@ -75,6 +83,9 @@ export default function HomeScreen({ navigation }) {
                     keyExtractor={item => item.id}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
+                    ItemSeparatorComponent={() => <View style={{width: 20}}/>}
+                    ListFooterComponent={() => <View style={{width: 20}}/>}
+                    ListHeaderComponent={() => <View style={{width: 20}}/>}
                 />
 
                 {/* Imported & Custom Decks */}
@@ -85,9 +96,11 @@ export default function HomeScreen({ navigation }) {
                         renderItem={importedItem}
                         keyExtractor={item => item.id}
                         showsVerticalScrollIndicator={false}
+                        ListFooterComponent={() => <View style={{height: 20}}/>}
                     />
                 </View>
             </SafeAreaView>
+            </ScrollView>
         </View>
     );
 }
@@ -128,7 +141,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     searchText: {
-        color: colors.textgrey,
+        color: colors.textblack,
         fontSize: 16,
         fontFamily: 'Montserrat-Regular',
         marginBottom: 5,
@@ -144,7 +157,6 @@ const styles = StyleSheet.create({
     categoriesItemWrapper: {
         width: 130,
         height: 180,
-        marginLeft: 20,
         marginTop: 30,
         marginBottom: 50,
         borderRadius: 15,
@@ -187,6 +199,7 @@ const styles = StyleSheet.create({
 
     importedListWrapper: {
         paddingTop: 30,
+        marginBottom: 50,
     },
     importedItemWrapper: {
         backgroundColor: 'white',
