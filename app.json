@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Quanda",
-    "slug": "Questions to Answer",
+    "slug": "Quanda",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/meta/icon.png",
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/meta/icon.png",
         "backgroundColor": "#14081a"
-      }
+      },
+      "package": "com.mrzplt.Quanda"
     },
     "web": {
       "favicon": "./assets/meta/icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "90e72a2e-afcd-4507-ac14-f25dab7ad846"
+      }
     }
   }
 }
