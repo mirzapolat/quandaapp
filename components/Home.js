@@ -2,6 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, StatusBar, TextInput, Image } from 'react-native';
 import { ScrollView } from 'react-native-virtualized-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { memo, useState } from 'react';
 
 import SVGMenu from '../assets/images/menu.svg';
 import SVGSearch from '../assets/images/search.svg';
@@ -9,18 +10,37 @@ import SVGRightArrow from '../assets/images/right-arrow.svg';
 import SVGCross from '../assets/images/cross.svg';
 
 import colors from '../assets/colors/colors';
+
 import categoriesData from '../assets/data/categoriesData';
 import importedData from '../assets/data/importedData';
-
-/*export var showCategoryDecks = true;
-export var showImportedDecks = true;
-export var showSearchBar = true;*/
 
 export default function HomeScreen({ navigation }) {
 
     {/* Search */}
     const [search, setSearch] = React.useState('');
-    handleSearch = (text) => { setSearch(text.toLowerCase()); }
+    const [csdCategory, setCsdCategory] = useState(categoriesData);
+    const [csdImported, setCsdImported] = useState(importedData);
+
+    {/* SearchBar */}
+    const SearchBar = memo(function SearchBar(){
+        return (
+            <View style={styles.searchWrapper}>
+                <SVGSearch width={24} height={24} style={{color: colors.textblack, marginTop: 10}} />
+                <View style={styles.search}>
+                    <TextInput
+                        onChangeText={(text) => setSearch(text.toLowerCase())}
+                        onBlur={() => {
+                            setCsdCategory(categoriesData.filter(item => item.title.toLowerCase().includes(search)));
+                            setCsdImported(importedData.filter(item => item.title.toLowerCase().includes(search)));
+                        }}
+                        clearButtonMode='always'
+                        placeholder='Search'
+                        style={styles.searchText}>
+                    </TextInput>
+                </View>
+            </View>
+        );
+    });
 
     {/* Cards --- from Categories */}
     const categoryItem = ({ item }) => {
@@ -65,17 +85,12 @@ export default function HomeScreen({ navigation }) {
                 </View>
 
                 {/* Search */}
-                <View style={styles.searchWrapper}>
-                    <SVGSearch width={24} height={24} style={{color: colors.textblack, marginTop: 10}} />
-                    <View style={styles.search}>
-                        <TextInput onChangeText={(text) => handleSearch(text)} clearButtonMode='always' placeholder='Search' style={styles.searchText}></TextInput>
-                    </View>
-                </View>
+                <SearchBar/>
 
                 {/* Categories */}
                 <Text style={styles.sectionTitle}>Categories</Text>
                 <FlatList
-                    data={categoriesData.filter(item => item.title.toLowerCase().includes(search))}
+                    data={csdCategory}
                     renderItem={categoryItem}
                     keyExtractor={item => item.id}
                     horizontal={true}
@@ -90,7 +105,7 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.sectionTitle}>Imported</Text>
                 <View style={styles.importedListWrapper}>
                     <FlatList
-                        data={importedData.filter(item => item.title.toLowerCase().includes(search))}
+                        data={csdImported}
                         renderItem={importedItem}
                         keyExtractor={item => item.id}
                         showsVerticalScrollIndicator={false}

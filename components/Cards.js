@@ -11,7 +11,6 @@ import colors from '../assets/colors/colors';
 /*export var alwaysNewCards = false;*/
 
 import { heuteCards, gesternCards, morgenCards, sparkCards } from '../assets/data/cards.js';
-var previousCardLog;
 
 export default function CardsScreen({ route, navigation }) {
 
@@ -28,31 +27,29 @@ export default function CardsScreen({ route, navigation }) {
         theDeck = ['Error loading Deck'];
     }
 
-    const [randomNumber, setRandomNumber] = useState(() => {
-        previousCardLog = [];
-        r = Math.floor(Math.random() * theDeck.length);
-        previousCardLog.push(r);
-        console.log(previousCardLog);
-        return r;
-    });
+    // Preparing the first card
+    const [cardPointer, setCardPointer] = useState(0);
+    const [previousCards, setPreviousCards] = useState([Math.floor(Math.random() * theDeck.length)]);
+    console.log(previousCards);
 
+    // When the user presses the button, a random card is chosen
     nextRandomCard = () => {
-        if (theDeck.length >= 2) {
+        if (cardPointer < previousCards.length - 1) { // if we haven't reached the end
+            setCardPointer(cardPointer + 1);
+        }
+        else if (theDeck.length > 1) {  // if there is more than one card in the deck and if we have reached the end
             do {
                 rand = Math.floor(Math.random() * theDeck.length);
-            } while (rand == randomNumber);
+            } while (rand == previousCards[cardPointer]); // make sure the next card is not the same as the previous one
 
-            setRandomNumber(rand);
-            previousCardLog.push(rand);
-            console.log(previousCardLog);
+            setPreviousCards([...previousCards, rand]);
+            setCardPointer(cardPointer + 1);
         }
     }
 
+    // When the user presses the button, the previous card is shown
     previousCard = () => {
-        if (previousCardLog.length >= 1) {
-            setRandomNumber(previousCardLog.pop());
-            console.log(previousCardLog);
-        }
+        if (cardPointer >= 0) setCardPointer(cardPointer - 1);;
     }
 
     const { deckItem } = route.params;
@@ -84,9 +81,9 @@ export default function CardsScreen({ route, navigation }) {
                 {/* Cards */}
 
                 <TouchableOpacity activeOpacity={0.5} style={styles.cardsWrapper} onPress={() => nextRandomCard()}>
-                    <Text style={styles.cardText}>{theDeck[randomNumber]}</Text>
-                    {previousCardLog.length > 1 &&
-                    <TouchableOpacity activeOpacity={0.5} style={styles.backButton} onPress={() => previousCard()}>
+                    <Text style={styles.cardText}>{theDeck[previousCards[cardPointer]]}</Text>
+                    {cardPointer > 0 &&
+                    <TouchableOpacity activeOpacity={1} style={styles.backButton} onPress={() => previousCard()}>
                         <Text style={styles.backButtonText}>Letzte Karte</Text>
                     </TouchableOpacity>}
                 </TouchableOpacity>
